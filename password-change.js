@@ -1,11 +1,3 @@
-// aws configure
-//set aws key and secrte
-
-//get List of All User
-//aws cognito-idp  list-users --user-pool-id  ap-south-1_wxjd20BU5 > listofuser.json
-
-//get List of User In Specefic Group
-//aws cognito-idp list-users-in-group --user-pool-id ap-south-1_wxjd20BU5 --group-name spark-download-enabled-users > download-enabled.json
 
 const json = require("./file.json");
 const username = json.Users?.map((m) => m.Username);

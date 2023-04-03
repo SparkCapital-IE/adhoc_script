@@ -9,29 +9,42 @@
 
 const GetReport = async () => {
     const fs = require("fs");
-    const download_enabled = require("./json/download-enabled.json");
-    const download_enabled_email = download_enabled.Users?.map((m) => m.Attributes?.filter((d) => d.Name == "email")?.[0]?.Value);
-    const download_enabled_email_set = [...new Set(download_enabled_email)];
+    let download_enabled = require("./json/download-enabled.json").Users;
+    download_enabled = download_enabled?.filter((d) => d.Enabled == true)
+    const download_enabled_email = download_enabled?.map((m) =>
+        m.Attributes?.filter((d) => d.Name == "email")?.[0]?.Value);
 
     let data = "Email\n";
-    for (let j in download_enabled_email_set) {
-        data += `${download_enabled_email_set[j]}\n`
+    for (let j in download_enabled_email) {
+        data += `${download_enabled_email[j]}\n`
     }
     fs.writeFileSync('./csv/download_enabled_email.csv', data);
 
-    data = "Email\n";
-    const listofuser = require("./json/listofuser.json");
-    const listofuser_email = listofuser.Users?.map((m) => m.Attributes?.filter((d) => d.Name == "email")?.[0]?.Value);
-    const listofuser_email_set = [...new Set(listofuser_email)];
+    let listofuserAll = require("./json/listofuser.json").Users;
 
-    for (let i in listofuser_email_set) {
-        data += `${listofuser_email_set[i]}\n`
+    let listofuserActive = listofuserAll?.filter((d) => d.Enabled == true)
+    let listofuserDeactive = listofuserAll?.filter((d) => d.Enabled != true)
+
+    const listofuser_email = listofuserActive?.map((m) =>
+        m.Attributes?.filter((d) => d.Name == "email")?.[0]?.Value);
+    const listofuserDeactive_email = listofuserDeactive?.map((m) =>
+        m.Attributes?.filter((d) => d.Name == "email")?.[0]?.Value);
+
+    data = "Email\n";
+    for (let i in listofuser_email) {
+        data += `${listofuser_email[i]}\n`
     }
     fs.writeFileSync('./csv/all_users_emails.csv', data);
 
     data = "Email\n";
-    const download_disable_email = listofuser_email.filter(email => !download_enabled_email_set.includes(email));
+    for (let i in listofuserDeactive_email) {
+        data += `${listofuserDeactive_email[i]}\n`
+    }
+    fs.writeFileSync('./csv/deactive_users_emails.csv', data);
 
+
+    const download_disable_email = listofuser_email.filter(email => !download_enabled_email.includes(email));
+    data = "Email\n";
     for (let i in download_disable_email) {
         data += `${download_disable_email[i]}\n`
     }

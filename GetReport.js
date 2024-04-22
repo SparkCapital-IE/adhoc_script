@@ -34,7 +34,7 @@ const GetReport = async () => {
     for (let i in listofuser_email) {
         data += `${listofuser_email[i]}\n`
     }
-    fs.writeFileSync('./csv/all_users_emails.csv', data);
+    fs.writeFileSync('./csv/all_active_users_emails.csv', data);
 
     data = "Email\n";
     for (let i in listofuserDeactive_email) {

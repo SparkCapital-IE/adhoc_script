@@ -9,16 +9,6 @@
 
 const GetReport = async () => {
     const fs = require("fs");
-    let download_enabled = require("./json/download-enabled.json").Users;
-    download_enabled = download_enabled?.filter((d) => d.Enabled == true)
-    const download_enabled_email = download_enabled?.map((m) =>
-        m.Attributes?.filter((d) => d.Name == "email")?.[0]?.Value);
-
-    let data = "Email\n";
-    for (let j in download_enabled_email) {
-        data += `${download_enabled_email[j]}\n`
-    }
-    fs.writeFileSync('./csv/download_enabled_email.csv', data);
 
     let listofuserAll = require("./json/listofuser.json").Users;
 
@@ -42,13 +32,23 @@ const GetReport = async () => {
     }
     fs.writeFileSync('./csv/deactive_users_emails.csv', data);
 
+    // let download_enabled = require("./json/download-enabled.json").Users;
+    // download_enabled = download_enabled?.filter((d) => d.Enabled == true)
+    // const download_enabled_email = download_enabled?.map((m) =>
+    //     m.Attributes?.filter((d) => d.Name == "email")?.[0]?.Value);
 
-    const download_disable_email = listofuser_email.filter(email => !download_enabled_email.includes(email));
-    data = "Email\n";
-    for (let i in download_disable_email) {
-        data += `${download_disable_email[i]}\n`
-    }
-    fs.writeFileSync('./csv/download_disable_email.csv', data);
+    // let data = "Email\n";
+    // for (let j in download_enabled_email) {
+    //     data += `${download_enabled_email[j]}\n`
+    // }
+    // fs.writeFileSync('./csv/download_enabled_email.csv', data);
+
+    // const download_disable_email = listofuser_email.filter(email => !download_enabled_email.includes(email));
+    // data = "Email\n";
+    // for (let i in download_disable_email) {
+    //     data += `${download_disable_email[i]}\n`
+    // }
+    // fs.writeFileSync('./csv/download_disable_email.csv', data);
 }
 GetReport()
 
